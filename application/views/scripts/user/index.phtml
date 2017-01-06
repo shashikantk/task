@@ -1,0 +1,27 @@
+<?php //view part ?>
+
+<p><a href="<?php echo $this->url(
+        array(
+            'controller' => 'user',
+            'action'     => 'add'
+        ),
+        'default',
+        true) ?>">Add User</a></p>
+        <br>
+<div>
+    <h2>User Listng :</h2>
+</div>
+
+<table>
+    <tr>
+        <th>Name </th>
+        <th>Email</th>
+
+    </tr>
+    <?php foreach ($this->entries as $entry): ?>
+    <tr>
+        <td><?php echo $this->escape($entry->name) ?></td>
+        <td><?php echo $this->escape($entry->email) ?></td>
+    </tr>
+    <?php endforeach ?>
+</table>
