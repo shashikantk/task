@@ -29,7 +29,7 @@ class Application_Model_UserMapper
         return $this->_dbTable;
     }
 
-    public function save(Application_Model_UserDetail $userdata)
+    public function save(Application_Model_UserData $userdata)
     {
         $data = array(
             'email'   => $userdata->getEmail(),
@@ -44,7 +44,7 @@ class Application_Model_UserMapper
         }
     }
 
-    public function find($id, Application_Model_UserDetail $userdata)
+    public function find($id, Application_Model_UserData $userdata)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
@@ -65,7 +65,12 @@ class Application_Model_UserMapper
             $entry = new Application_Model_UserData();
             $entry->setId($row->id)
                 ->setEmail($row->email)
-                ->setName($row->name);
+                ->setName($row->name)
+                ->setGender($row->gender)
+                ->setCountry($row->country_id)
+                ->setState($row->state_id)
+                ->setHobbies($row->hobbies_id)
+                ->setImage($row->image);
 
             $entries[] = $entry;
         }

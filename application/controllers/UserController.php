@@ -16,6 +16,8 @@ class UserController extends Zend_Controller_Action
     public function indexAction()
     {
         $userdata = new Application_Model_UserMapper();
+        $countrydata = new Application_Model_CountryMapper();
+        print_r($countrydata->fetchAll());
         //$this->addAction();
         $this->view->entries = $userdata->fetchAll();
     }
@@ -37,7 +39,23 @@ class UserController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    public function stateAction()
+    {
+        $request = $this->getRequest();
+        $objstatelist = new Application_Model_StateMapper();
+        $countryId=$request->getParam('countryId');
+        $states=$objstatelist->fetchAll($countryId);
+        print_r($states);
+        $this->_helper->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        echo json_encode($states);
+        exit;
+        /*$this->_helper->layout->disableLayout();
+        $this->getResponse()->setHeader('Content-Type', 'text/javascript');
 
+        $this->view->states=$states;*/
+
+    }
 }
 
 

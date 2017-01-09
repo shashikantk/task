@@ -16,12 +16,26 @@
     <tr>
         <th>Name </th>
         <th>Email</th>
-
+        <th>Gender </th>
+        <th>Country</th>
+        <th>State</th>
+        <th>Hobbies</th>
+        <th>Image</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
-    <?php foreach ($this->entries as $entry): ?>
+    <?php print_r($this->entries);foreach ($this->entries as $entry): ?>
     <tr>
         <td><?php echo $this->escape($entry->name) ?></td>
         <td><?php echo $this->escape($entry->email) ?></td>
+        <td><?php echo $this->escape($entry->gender) ?></td>
+        <td><?php echo $this->escape($entry->country) ?></td>
+        <td><?php echo $this->escape($entry->state) ?></td>
+        <td><?php echo $this->escape($entry->hobbies) ?></td>
+        <td><?php echo $this->escape($entry->image) ?></td>
+        <td><input type="button" value="Edit" id="<?php echo $this->escape($entry->id) ?>" name="edit" ></td>
+        <td><input type="button" value="Delete" id="<?php echo $this->escape($entry->id) ?>" name="edit" ></td>
+
     </tr>
     <?php endforeach ?>
 </table>

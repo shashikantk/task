@@ -28,28 +28,30 @@ class Application_Form_UserDetails extends Zend_Form
             )
         ));
 
+        $countrydata = new Application_Model_CountryMapper();
+        $countrieslist = array('0'=>'Select Country');
+        foreach($countrydata->fetchAll() as $val) {
+        //print_r($val->country);
+            $countrieslist[$val->id]=$val->country;
+        }
         //add country list
         $this->addElement('select', 'country', array(
             'label'        => 'Country (select):',
-            'value'        => 'blue',
-            'multiOptions' => array(
-                'red'    => 'Rouge',
-                'blue'   => 'Bleu',
-                'white'  => 'Blanc',
-            ),
+            'multiOptions' =>
+                $countrieslist
+            ,
         ));
 
         //add state list
         $this->addElement('select', 'state', array(
             'label'        => 'State (select):',
-            'value'        => 'blue',
+            'value'        => '0',
             'multiOptions' => array(
-                'red'    => 'Rouge',
-                'blue'   => 'Bleu',
-                'white'  => 'Blanc',
+                '0'    => 'Select State',
+
             ),
         ));
-
+        
         //add country list
         $this->addElement('radio', 'gender', array(
             'label'        => 'Gender:',
