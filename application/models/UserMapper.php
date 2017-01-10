@@ -32,8 +32,14 @@ class Application_Model_UserMapper
     public function save(Application_Model_UserData $userdata)
     {
         $data = array(
-            'email'   => $userdata->getEmail(),
-            'name' => $userdata->getName()
+            'email'     => $userdata->getEmail(),
+            'name'      => $userdata->getName(),
+            'gender'    => $userdata->getGender(),
+            'country_id'   => $userdata->getCountry(),
+            'state_id'     => $userdata->getState(),
+            'hobbies_id'   => $userdata->getHobbies(),
+            'image'     => $userdata->getImage()
+
         );
 
         if (null === ($id = $userdata->getId())) {
@@ -60,6 +66,7 @@ class Application_Model_UserMapper
     public function fetchAll()
     {
         $resultSet = $this->getDbTable()->fetchAll();
+
         $entries   = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_UserData();

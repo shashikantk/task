@@ -13,8 +13,8 @@ class Application_Form_UserDetails extends Zend_Form
             'label'         => 'You Name:',
             'required'      => true,
             'filters'       => array('StringTrim'),
-            'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(0, 40))
+            'validators' => array(array('Alpha'),
+                array('validator' => 'StringLength', 'options' => array(0, 30))
             )
         ));
 
@@ -28,36 +28,29 @@ class Application_Form_UserDetails extends Zend_Form
             )
         ));
 
-        $countrydata = new Application_Model_CountryMapper();
-        $countrieslist = array('0'=>'Select Country');
-        foreach($countrydata->fetchAll() as $val) {
-        //print_r($val->country);
-            $countrieslist[$val->id]=$val->country;
-        }
         //add country list
         $this->addElement('select', 'country', array(
             'label'        => 'Country (select):',
-            'multiOptions' =>
-                $countrieslist
-            ,
-        ));
+            'required'      => true,
+            'onChange' => 'getState();'
+            ));
 
         //add state list
         $this->addElement('select', 'state', array(
             'label'        => 'State (select):',
-            'value'        => '0',
-            'multiOptions' => array(
-                '0'    => 'Select State',
-
+            'required'      => true,
+            'multiOptions'=>array(
+                '' => 'Select State',
             ),
         ));
-        
-        //add country list
+
+        //add gender
         $this->addElement('radio', 'gender', array(
             'label'        => 'Gender:',
+            'required'      => true,
             'multiOptions'=>array(
-                'male' => 'Male',
-                'female' => 'Female',
+                'm' => 'Male',
+                'f' => 'Female',
             ),
         ));
 
@@ -67,19 +60,13 @@ class Application_Form_UserDetails extends Zend_Form
             'required'   => true,
         ));
 
-        $this->getElement('hobbies')->setMultiOptions(array(
-            //'option value' => 'option label'
-            '1' => 'play',
-            '2' => 'dance',
-            '3' => 'cricket'
-        ));
-
         //upload/add image
         $image = new Zend_Form_Element_File('image');
         $image->setLabel('Upload an image:')
             ->setRequired(true)
             ->setMaxFileSize(1024000) // limits the filesize on the client side
-            ->setDescription('Click Browse and click on the image file you would like to upload');
+            ->setDescription('Click Browse and click on the image file you would like to upload')
+            ->setDestination('../public/images/');
         $image->addValidator('Count', false, 1);                // ensure only 1 file
         $image->addValidator('Size', false, 1024000);            // limit to 10 meg
         $image->addValidator('Extension', false, 'jpg,jpeg,png,gif');// only JPEG, PNG, and GIFs
@@ -89,11 +76,6 @@ class Application_Form_UserDetails extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Add User',
-        ));
-
-        // And finally add some CSRF protection
-        $this->addElement('hash', 'csrf', array(
-            'ignore' => true,
         ));
 
     }

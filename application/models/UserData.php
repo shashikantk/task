@@ -112,7 +112,7 @@ class Application_Model_UserData
 
     public function setHobbies($hobbies)
     {
-        $this->_hobbies = $hobbies;
+        $this->_hobbies = is_array($hobbies)?implode(",",$hobbies):explode(",",$hobbies);
         return $this;
     }
 

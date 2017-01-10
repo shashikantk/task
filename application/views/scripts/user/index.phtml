@@ -24,15 +24,15 @@
         <th>Edit</th>
         <th>Delete</th>
     </tr>
-    <?php print_r($this->entries);foreach ($this->entries as $entry): ?>
+    <?php foreach ($this->entries as $entry): ?>
     <tr>
         <td><?php echo $this->escape($entry->name) ?></td>
         <td><?php echo $this->escape($entry->email) ?></td>
-        <td><?php echo $this->escape($entry->gender) ?></td>
+        <td><?php if($this->escape($entry->gender)=='m'){echo 'Male';}elseif($this->escape($entry->gender)=='f'){echo 'Female';} ?></td>
         <td><?php echo $this->escape($entry->country) ?></td>
         <td><?php echo $this->escape($entry->state) ?></td>
-        <td><?php echo $this->escape($entry->hobbies) ?></td>
-        <td><?php echo $this->escape($entry->image) ?></td>
+        <td><?php echo @$this->escape($entry->hobbies) ?></td>
+        <td><img  src="/<?php echo  $this->escape($entry->image) ?>" height="50" width="50" /> </td>
         <td><input type="button" value="Edit" id="<?php echo $this->escape($entry->id) ?>" name="edit" ></td>
         <td><input type="button" value="Delete" id="<?php echo $this->escape($entry->id) ?>" name="edit" ></td>
 

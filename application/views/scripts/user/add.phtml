@@ -3,21 +3,31 @@ Please use the form below to add users!
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
+
 ?>
 <script>
-    var base_path = "<?php echo $this->baseUrl();?>/";
 
-    $('#country').change(function()
+    var base_path = "<?php echo $this->baseUrl();?>/";
+    function getState()
     {
         var countryId=document.getElementById('country').value;
 
         $.ajax({    url:  base_path + "user/state/",
                     data: "countryId="+countryId,
                     type: 'GET',
-                    success: function (resp) {console.log(JSON.stringify(resp));
-                        document.getElementById('state').innerHTML=resp;},
+                    dataType: 'json',
+                    success: function (resp) {
+                        var statelist = '';
+                        if(resp.length) {
+                            for (var i = 0; i < resp.length; i++) {
+                                statelist += '<option value="' + resp[i].id + '">' + resp[i].state + '</option> ';
+                            }
+                        }else{
+                            statelist='<option value="">Select State </option>';
+                        }
+                        document.getElementById('state').innerHTML=statelist;},
                     error: function(e){  alert('Error: '+e);  }
                 });
-    });
+    }
 
 </script>

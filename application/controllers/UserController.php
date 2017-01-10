@@ -16,9 +16,6 @@ class UserController extends Zend_Controller_Action
     public function indexAction()
     {
         $userdata = new Application_Model_UserMapper();
-        $countrydata = new Application_Model_CountryMapper();
-        print_r($countrydata->fetchAll());
-        //$this->addAction();
         $this->view->entries = $userdata->fetchAll();
     }
 
@@ -26,8 +23,25 @@ class UserController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $form    = new Application_Form_UserDetails();
+        $countrydata = new Application_Model_CountryMapper();
+        $countrieslist = array(''=>'Select Country');
+
+        foreach($countrydata->fetchAll() as $val) {
+            $countrieslist[$val->id]=$val->country;
+        }
+
+        $form->getElement('country')->setMultiOptions($countrieslist);
+        $hobbiesdata = new Application_Model_HobbiesMapper();
+        $hobbieslist = array();
+
+        foreach($hobbiesdata->fetchAll() as $val) {
+            $hobbieslist[$val->id]=$val->hobbies;
+        }
+
+        $form->getElement('hobbies')->setMultiOptions($hobbieslist);
 
         if ($this->getRequest()->isPost()) {
+            $form->getElement('state')->setRegisterInArrayValidator(false);
             if ($form->isValid($request->getPost())) {
                 $userdata = new Application_Model_UserData($form->getValues());
                 $mapper  = new Application_Model_UserMapper();
@@ -45,16 +59,10 @@ class UserController extends Zend_Controller_Action
         $objstatelist = new Application_Model_StateMapper();
         $countryId=$request->getParam('countryId');
         $states=$objstatelist->fetchAll($countryId);
-        print_r($states);
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        echo json_encode($states);
+        echo $this->_helper->json($states);
         exit;
-        /*$this->_helper->layout->disableLayout();
-        $this->getResponse()->setHeader('Content-Type', 'text/javascript');
-
-        $this->view->states=$states;*/
-
     }
 }
 

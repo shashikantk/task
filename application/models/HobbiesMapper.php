@@ -5,7 +5,7 @@
  * Date: 1/9/2017
  * Time: 4:40 PM
  */
-class Application_Model_StateMapper
+class Application_Model_HobbiesMapper
 {
     protected $_dbTable;
 
@@ -24,28 +24,35 @@ class Application_Model_StateMapper
     public function getDbTable()
     {
         if (null === $this->_dbTable) {
-            $this->setDbTable('Application_Model_DbTable_State');
+            $this->setDbTable('Application_Model_DbTable_Hobbies');
         }
         return $this->_dbTable;
     }
 
-    public function find($id, Application_Model_State $statedata)
+
+    public function find($id, Application_Model_Hobbies $hobbies)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
             return;
         }
         $row = $result->current();
-        $statedata->setId($row->id)
-            ->setState($row->state)
-            ->setCountryId($row->countryId);
+        $hobbies->setId($row->id)
+            ->setHobbies($row->hobbies);
 
     }
 
-    public function fetchAll($countryId)
+    public function fetchAll()
     {
-        $resultSet = $this->getDbTable()->fetchAll($this->getDbTable()->select()->where('country_id=?',$countryId));
-        return $resultSet;
-    }
+        $resultSet = $this->getDbTable()->fetchAll();
+        $hobbies   = array();
+        foreach ($resultSet as $row) {
+            $entry = new Application_Model_Hobbies();
+            $entry->setId($row->id)
+                ->setHobbies($row->hobbies);
 
+            $hobbies[] = $entry;
+        }
+        return $hobbies;
+    }
 }
